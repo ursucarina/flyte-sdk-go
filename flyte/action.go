@@ -6,7 +6,6 @@ import (
 	"sync"
 
 	"connectrpc.com/connect"
-	"google.golang.org/protobuf/reflect/protoreflect"
 
 	"github.com/flyteorg/flyte/v2/gen/go/flyteidl2/common"
 	"github.com/flyteorg/flyte/v2/gen/go/flyteidl2/workflow"
@@ -81,10 +80,7 @@ func (r *RunHandle) ListActions(ctx context.Context) ([]*Action, error) {
 func newListActionsRequest(runID *common.RunIdentifier, token string) *workflow.ListActionsRequest {
 	request := &workflow.ListActionsRequest{Request: &common.ListRequest{Limit: 100, Token: token}}
 	if runID != nil {
-		// run_id kept its wire field when it moved into a oneof. Reflection
-		// supports both generated Go representations without changing the API pin.
-		message := request.ProtoReflect()
-		message.Set(message.Descriptor().Fields().ByName("run_id"), protoreflect.ValueOfMessage(runID.ProtoReflect()))
+		request.ScopeBy = &workflow.ListActionsRequest_RunId{RunId: runID}
 	}
 	return request
 }

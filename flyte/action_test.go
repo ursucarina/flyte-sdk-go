@@ -39,6 +39,11 @@ func TestNewListActionsRequest(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			request := newListActionsRequest(tt.runID, tt.token)
+			if tt.runID == nil {
+				assert.Nil(t, request.GetScopeBy(), "missing identity must omit the oneof")
+			} else {
+				require.IsType(t, &workflow.ListActionsRequest_RunId{}, request.GetScopeBy())
+			}
 			assert.True(t, proto.Equal(tt.runID, request.GetRunId()))
 			assert.Equal(t, uint32(100), request.GetRequest().GetLimit())
 			assert.Equal(t, tt.token, request.GetRequest().GetToken())
@@ -49,6 +54,11 @@ func TestNewListActionsRequest(t *testing.T) {
 			require.NoError(t, err)
 			decoded := &workflow.ListActionsRequest{}
 			require.NoError(t, proto.Unmarshal(binary, decoded))
+			if tt.runID == nil {
+				assert.Nil(t, decoded.GetScopeBy())
+			} else {
+				require.IsType(t, &workflow.ListActionsRequest_RunId{}, decoded.GetScopeBy())
+			}
 			assert.True(t, proto.Equal(tt.runID, decoded.GetRunId()), "run scope survives the wire round trip")
 		})
 	}
