@@ -7,7 +7,7 @@ require (
 	github.com/aws/aws-sdk-go-v2 v1.47.3
 	github.com/aws/aws-sdk-go-v2/config v1.33.9
 	github.com/aws/aws-sdk-go-v2/service/s3 v1.114.0
-	github.com/flyteorg/flyte/v2 v2.0.54-0.20261027133126-26b90bf2b866
+	github.com/flyteorg/flyte/v2 v2.0.54-0.20261027150304-6a81574fb26b
 	github.com/golang-jwt/jwt/v5 v5.3.1
 	github.com/pkg/browser v0.0.0-20240102092130-5ac0b6a4141c
 	github.com/stretchr/testify v1.12.1
